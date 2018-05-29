@@ -1,0 +1,18 @@
+language: generic
+
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+      sudo: required
+  fast_finish: true
+
+install:
+  - curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -
+  - curl https://packages.microsoft.com/config/ubuntu/14.04/prod.list | sudo tee /etc/apt/sources.list.d/microsoft.list
+  - sudo apt-get update
+  - sudo apt-get install -y powershell
+
+script:
+  - sudo pwsh -c 'Install-Module -Name Pester -Force -SkipPublisherCheck'
+  - sudo pwsh -c 'Invoke-Pester -EnableExit'

@@ -35,9 +35,17 @@ function Get-Stock
             [ValidateNotNullOrEmpty()]
             [string]$url
         )
-        $results = Invoke-WebRequest -Uri $url
-        $results = $results.Content | ConvertFrom-Json
-        return $results
+        try
+        {
+            $results = Invoke-WebRequest -Uri $url
+            $results = $results.Content | ConvertFrom-Json
+            return $results
+        }
+        catch
+        {
+            Write-Error "Symbol (${symbol}) could not be found."
+            Exit
+        }
     }
 
     <#
