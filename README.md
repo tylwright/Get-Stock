@@ -1,2 +1,37 @@
 # Get-Stock
-PowerShell module to get stock prices and other information
+[![Build Status](https://travis-ci.org/tylwright/Get-Stock.svg?branch=master)](https://travis-ci.org/tylwright/Get-Stock)
+
+## Description
+This PowerShell module utilizes the IEX Group's public/free-to-use API to query information about passed in symbols.
+
+## How to use
+```
+Import-Module ./Get-Stock.psm1
+```
+
+### Return stock information about provided symbol
+*Input:*
+```
+Get-Stock -Symbol AAPL
+```
+*Output:*
+```
+Company                        Apple Inc.
+CEO                            Timothy D. Cook
+Industry                       Computer Hardware
+Website                        http://www.apple.com
+-                              -
+Open                           188.27
+Close                          188.58
+Price                          188.58
+```
+
+## Requirements
+There are no requirements for normal usage.
+
+### Unit Tests
+In order to perform unit tests, you'll need Pester.
+```
+Install-Module -Name Pester -Force -SkipPublisherCheck
+Invoke-Pester
+```
