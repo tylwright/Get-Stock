@@ -3,7 +3,7 @@
 	Git Repo: https://github.com/tylwright/Get-Stock
     
     .Synopsis
-	Shows information regarding a particular stock
+    Shows information regarding a particular stock
 
 	.Parameter Symbol
 	Symbol of stock you wish to get the details of
@@ -98,7 +98,7 @@ function Get-Stock
         return $results.CEO
     }
 
-     <#
+    <#
         .Synopsis
         Returns URL of company's website
 
@@ -116,7 +116,7 @@ function Get-Stock
         return $results.website
     }
 
-     <#
+    <#
         .Synopsis
         Returns company name
 
@@ -134,7 +134,7 @@ function Get-Stock
         return $results.companyName
     }
 
-     <#
+    <#
         .Synopsis
         Returns industry of company
 
@@ -152,7 +152,7 @@ function Get-Stock
         return $results.industry
     }
 
-     <#
+    <#
         .Synopsis
         Returns description of company
 
@@ -170,7 +170,7 @@ function Get-Stock
         return $results.description
     }
 
-     <#
+    <#
         .Synopsis
         Returns current price of stock
     #>
@@ -186,8 +186,8 @@ function Get-Stock
     
     # Start building report
     $report = [ordered]@{
-       Company = Get-Name -results $results; CEO = Get-CEO -results $results; Industry = Get-Industry -results $results;
-       Website = Get-Website -results $results; '-' = '-';
+        Company = Get-Name -results $results; CEO = Get-CEO -results $results; Industry = Get-Industry -results $results;
+        Website = Get-Website -results $results; '-' = '-';
         Open = Get-OpenClosePrice -time open; Close = Get-OpenClosePrice -time close; Price = Get-Price;
     }
    
