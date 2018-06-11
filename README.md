@@ -26,6 +26,17 @@ Close                          188.58
 Price                          188.58
 ```
 
+### Return specific information about provided symbol
+Select parameter can take: ceo, company, website, industry, openeningPrice, closingPrice, or price.
+*Input:*
+```
+Get-Stock -Symbol AAPL -Select CEO
+```
+*Output:*
+```
+Timothy D. Cook
+```
+
 ## Requirements
 There are no requirements for normal usage.
 
