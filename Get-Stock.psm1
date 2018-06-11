@@ -19,7 +19,11 @@ function Get-Stock
     (
         [Parameter(Mandatory = $true, HelpMessage = "Stock symbol (ex. AAPL)")]
         [ValidateNotNullOrEmpty()]
-        [string]$symbol
+        [string]$symbol,
+        [Parameter(Mandatory = $false,
+                HelpMessage = 'Return value of specific item')]
+        [ValidateNotNullOrEmpty()]
+        [string]$select
     )
 
     # Functions
@@ -187,20 +191,42 @@ function Get-Stock
         return (Get-Results -url "https://api.iextrading.com/1.0/stock/${symbol}/price")
     }
 
-    # If making the same API call numerous times for the same group of data, stop and just call it once here.
-    # From here, take the returned data and use it anywhere you wish.
-    # This saves us from having to call the API over and over for the same info.
-    $results = Get-StockCompanyInfo
-    
-    # Start building report
-    $report = [ordered]@{
-        Company = Get-Name -results $results; CEO = Get-CEO -results $results; Industry = Get-Industry -results $results;
-        Website = Get-Website -results $results; '-' = '-';
-        Open = Get-OpenClosePrice -time open; Close = Get-OpenClosePrice -time close; Price = Get-Price;
+    # Main
+    if ($select)
+    {
+        if ($select.ToLower() -notmatch 'price|openingprice|closingprice|ceo|industry|website|company')
+        {
+            throw "Select options: price, openingPrice, closingPrice, CEO, industry, website, company"
+        }
     }
-   
-    # Print the report
-    $report | Format-Table -HideTableHeaders
+
+    Switch ($select)
+    {
+        "price" { Get-Price }
+        "closingPrice" { Get-OpenClosePrice -time close }
+        "openingPrice" { Get-OpenClosePrice -time open }
+        "ceo" { Get-CEO -results (Get-StockCompanyInfo) }
+        "industry" { Get-Industry -results (Get-StockCompanyInfo) }
+        "website" { Get-Website -results (Get-StockCompanyInfo) }
+        "company" { Get-Name -results (Get-StockCompanyInfo) }
+        default
+        {
+            # If making the same API call numerous times for the same group of data, stop and just call it once here.
+            # From here, take the returned data and use it anywhere you wish.
+            # This saves us from having to call the API over and over for the same info.
+            $results = Get-StockCompanyInfo
+            
+            # Start building report
+            $report = [ordered]@{
+                Company = Get-Name -results $results; CEO = Get-CEO -results $results; Industry = Get-Industry -results $results;
+                Website = Get-Website -results $results; '-' = '-';
+                Open = Get-OpenClosePrice -time open; Close = Get-OpenClosePrice -time close; Price = Get-Price;
+            }
+        
+            # Print the report
+            $report | Format-Table -HideTableHeaders
+        }
+    }
 }
 
 Export-ModuleMember -Function Get-Stock
